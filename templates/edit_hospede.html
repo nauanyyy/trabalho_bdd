@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Hóspede</title>
+    <style>
+        body {
+            background-color: #e9f4fe;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #87ceeb;
+            padding: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: #003366;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: hsl(232, 100%, 50%);
+        }
+
+        .logout-button {
+            padding: 5px 8px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-weight: bold;
+            width: 100px;
+            height: 22px;
+        }
+
+        .logout-button:hover {
+            background-color: #002244;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding-top: 10px;
+            padding: 20px;
+            width: 350px;
+            margin: 25px auto;
+        }
+
+        h1 {
+            color: #003366;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+            padding: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 90%;
+            margin-left: 8px;
+            margin-top: 5px;
+            padding: 10px;
+            border: 1px solid #87ceeb;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            border-color: #000c79;
+            outline: none;
+        }
+
+        button {
+            background-color: #b3d4f7;
+            color: #003366;
+            font-weight: bold;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #459bf7;
+        }
+
+        .cancel-button {
+            background-color: #0025cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .cancel-button:hover {
+            background-color: #d32f2f;
+        }
+        
+        .logo {
+            width: 80px;
+            height: auto;
+            margin-right: 30px;
+            vertical-align: middle;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <img src="{{ url_for('static', filename='hotel_menu.png') }}" alt="Logo" class="logo">
+                </li>
+                <li><a href="{{ url_for('index') }}">Início</a></li>
+                <li><a href="{{ url_for('hospedes') }}">Hóspedes</a></li>
+                <li><a href="{{ url_for('quartos') }}">Quartos</a></li>
+                <li><a href="{{ url_for('reservas') }}">Reservas</a></li>
+                <li><a href="{{ url_for('relatorios') }}">Relatórios</a></li>
+                {% if is_admin %}
+                    <li><a href="{{ url_for('cadastrar_usuario') }}">Cadastrar Usuário</a></li>
+                    <li><a href="{{ url_for('listar_logs') }}">Listagem de Logs</a></li>
+                {% endif %}
+                <li>
+                    <form action="{{ url_for('logout') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="logout-button">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                    <span class="close" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="form-container">
+        <h1 style="margin-bottom: 15px;">Editar Hóspede</h1>
+        <form method="POST">
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" value="{{ hospede[1] }}" required>
+            
+            <label for="cpf">CPF:</label>
+            <input type="text" name="cpf" value="{{ hospede[2] }}" required>
+            
+            <label for="telefone">Telefone:</label>
+            <input type="text" name="telefone" value="{{ hospede[3] }}">
+            
+            <label for="email">E-mail:</label>
+            <input type="email" name="email" value="{{ hospede[4] }}">
+            
+            <button type="submit">Atualizar</button>
+            <button type="button" class="cancel-button" data-url="{{ url_for('hospedes') }}" onclick="window.location.href=this.dataset.url;">Cancelar</button>
+        </form>
+    </div>
+</body>
+</html>

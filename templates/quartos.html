@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Quartos</title>
+    <style>
+        body {
+                    font-family: 'Arial', sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #e9f4fe;
+                }
+
+        header {
+            background-color: #87ceeb;
+            padding: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: #003366;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: hsl(232, 100%, 50%);
+        }
+
+        .container {
+            display: flex;
+            margin: 60px auto 20px;
+            max-width: 1200px;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            margin-right: 30px;
+        }
+
+        .form-container h2 {
+            margin-top: 0;
+            color: #003366;
+        }
+
+        label {
+            display: block;
+            padding: 5px;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #87ceeb;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #000c79;
+            outline: none;
+        }
+
+        button {
+            background-color: #b3d4f7;
+            color: #003366;
+            font-weight: bold;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #459bf7;
+        }
+
+        .list-container {
+            flex: 1; 
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .list-container h2 {
+            margin-top: 0;
+            color: #003366;
+        }
+
+        .quarto-card {
+            border: 1px solid #b3d4f7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quarto-card div {
+            flex: 1; 
+        }
+
+        .acoes {
+            display: flex;
+            gap: 10px; 
+        }
+
+        .acoes button {
+            background-color: #67baff; 
+            color: #003366;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 90px;
+            transition: background-color 0.3s;
+            font-size: 0.9em;
+        }
+
+        .acoes button:hover {
+            background-color: #7489ff;
+        }
+
+        .acoes button.delete {
+            color: #abc8fd;
+            background-color: #0025cc; 
+        }
+
+        .acoes button.delete:hover {
+            background-color: rgb(0, 24, 133);
+        }
+
+        .sort-container {
+            align-items: center;
+            margin-bottom: 20px; 
+        }
+
+        .sort-button {
+            background-color: #67baff;
+            color: #003366;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px; 
+            transition: background-color 0.3s;
+            width: 80px; 
+        }
+
+        .sort-button:hover {
+            background-color: #459bf7; 
+        }
+
+        .alert-container {
+            position: fixed; 
+            top: 70px;
+            left: 50%;
+            margin-top: 5px;
+            transform: translateX(-50%);
+            width: auto;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .alert {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        .close {
+            margin-left: 15px;
+            cursor: pointer;
+            color: inherit;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .logout-button {
+            padding: 5px 8px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-weight: bold;
+            width: 100px;
+            height: 22px;
+        }
+
+        .logout-button:hover {
+            background-color: #002244;
+        }
+
+        
+        .logo {
+            width: 80px;
+            height: auto;
+            margin-right: 30px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .form-container, .list-container {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <img src="{{ url_for('static', filename='hotel_menu.png') }}" alt="Logo" class="logo">
+                </li>
+                <li><a href="{{ url_for('index') }}">Início</a></li>
+                <li><a href="{{ url_for('hospedes') }}">Hóspedes</a></li>
+                <li><a href="{{ url_for('quartos') }}">Quartos</a></li>
+                <li><a href="{{ url_for('reservas') }}">Reservas</a></li>
+                <li><a href="{{ url_for('relatorios') }}">Relatórios</a></li>
+                {% if is_admin %}
+                    <li><a href="{{ url_for('cadastrar_usuario') }}">Cadastrar Usuário</a></li>
+                    <li><a href="{{ url_for('listar_logs') }}">Listagem de Logs</a></li>
+                {% endif %}
+                <li>
+                <li>
+                    <form action="{{ url_for('logout') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="logout-button">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                    <span class="close" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <div class="form-container" style="height: 625px;">
+            <h2>Cadastrar Novo Quarto</h2>
+            <form action="{{ url_for('quartos') }}" method="POST">
+                <label for="numero">Número do Quarto:</label>
+                <input type="text" id="numero" name="numero" required>
+
+                <label for="tipo"></label>Tipo:</label>
+                <select id="tipo" name="tipo" required style="width: 290px;">
+                    <option value="Solteiro">Solteiro</option>
+                    <option value="Casal">Casal</option>
+                    <option value="Família">Família</option>
+                    <option value="Luxo">Luxo</option>
+                </select>
+
+                <label for="capacidade">Capacidade:</label>
+                <input type="number" id="capacidade" name="capacidade" min="1" required>
+
+                <label for="descricao">Descrição:</label>
+                <textarea id="descricao" name="descricao" rows="4" required></textarea>
+
+                <label for="preco">Preço por Diária (R$):</label>
+                <input type="number" id="preco" name="preco" step="0.01" required>
+
+                <button type="submit">Cadastrar Quarto</button>
+            </form>
+        </div>
+
+        <div class="list-container" style="height: auto;">
+            <h2>Lista de Quartos</h2>
+            <form method="GET" action="{{ url_for('quartos') }}" style="margin-bottom: 20px;">
+                <div class="sort-container" style="display: flex; align-items: center;">
+                    <label for="order" style="margin-right: 10px;">Ordenar por Número:</label>
+                    <select name="order" id="order" style="padding: 10px; border-radius: 5px; border: 1px solid #87ceeb; width: 120px;">
+                        <option value="asc" {% if order == 'asc' %}selected{% endif %}>Crescente</option>
+                        <option value="desc" {% if order == 'desc' %}selected{% endif %}>Decrescente</option>
+                    </select>
+                    <button type="submit" class="sort-button" style="padding: 5px; font-size: 14px; width: 80px; margin-left: 10px; margin-bottom: 15px;">Ordenar</button>
+                </div>
+            </form>
+
+            {% for quarto in quartos %}
+                <div class="quarto-card">
+                    <div>
+                        <strong>Número: {{ quarto[1] }}</strong><br>
+                        <p style="color: #555;">Tipo: {{ quarto[2] }}</p>
+                        <p style="color: #555;">Capacidade: {{ quarto[3] }}</p>
+                        <p style="color: #555;">Descrição: {{ quarto[4] }}</p>
+                        <p style="color: #555;">Preço: R$ {{ quarto[5] }}</p>
+                    </div>
+                    <div class="acoes">
+                        <button data-url="{{ url_for('edit_quarto', id=quarto[0]) }}" onclick="window.location.href=this.dataset.url">Editar</button>
+                        <form method="POST" action="{{ url_for('delete_quarto', id=quarto[0]) }}" style="display:inline;">
+                            <button type="submit" class="delete" onclick="return confirm('Tem certeza que deseja excluir este quarto?')">Excluir</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

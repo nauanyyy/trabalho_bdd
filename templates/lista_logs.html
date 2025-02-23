@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Logs</title>
+    <style>
+        body {
+                    font-family: 'Arial', sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #e9f4fe;
+                }
+
+        header {
+            background-color: #87ceeb;
+            padding: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: #003366;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: hsl(232, 100%, 50%);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            margin: 60px auto 20px;
+            max-width: 1200px;
+        }
+
+        .container h2 {
+            text-align: center;
+            color: #003366;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #b3d4f7;
+            transition: background-color 0.3s;
+        }
+
+        th {
+            background-color: #87ceeb;
+            color: #003366; 
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+
+        tr:hover {
+            background-color: #d1e7fd;
+        }
+
+        .no-logs {
+            text-align: center;
+            color: #721c24; /* Cor de erro */
+            margin-top: 20px;
+        }
+        .logo {
+            width: 80px; 
+            height: auto;
+            margin-right: 30px;
+            vertical-align: middle;
+        }
+
+        button {
+            background-color: #b3d4f7;
+            color: #003366;
+            font-weight: bold;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #459bf7;
+        }
+        
+        .logout-button {
+            padding: 5px 8px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-weight: bold;
+            width: 100px;
+            height: 22px;
+        }
+
+        .logout-button:hover {
+            background-color: #002244;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <img src="{{ url_for('static', filename='hotel_menu.png') }}" alt="Logo" class="logo">
+                </li>
+                <li><a href="{{ url_for('index') }}">Início</a></li>
+                <li><a href="{{ url_for('hospedes') }}">Hóspedes</a></li>
+                <li><a href="{{ url_for('quartos') }}">Quartos</a></li>
+                <li><a href="{{ url_for('reservas') }}">Reservas</a></li>
+                <li><a href="{{ url_for('relatorios') }}">Relatórios</a></li>
+                {% if is_admin %}
+                    <li><a href="{{ url_for('cadastrar_usuario') }}">Cadastrar Usuário</a></li>
+                    <li><a href="{{ url_for('listar_logs') }}">Listagem de Logs</a></li>
+                {% endif %}
+                <li>
+                    <form action="{{ url_for('logout') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="logout-button">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Lista de Logs de Reservas</h2>
+        {% if logs and logs|length > 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Operação</th>
+                    <th>ID da Reserva</th>
+                    <th>Usuário</th>
+                    <th>Data e Hora</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log[0] }}</td>  <!-- Use índices em vez de atributos -->
+                    <td>{{ log[1] }}</td>
+                    <td>{{ log[2] }}</td>
+                    <td>{{ log[3] }}</td>
+                    <td>{{ log[4] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="no-logs">Nenhum log encontrado.</div>
+        {% endif %}
+    </div>
+</body>
+</html>

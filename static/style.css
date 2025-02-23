@@ -1,0 +1,159 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e9f4fe;
+}
+
+header {
+background-color: #87ceeb;
+padding: 15px 0;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+position: relative;
+}
+
+nav ul {
+list-style-type: none;
+padding: 0;
+text-align: center;
+margin: 10px 0;
+}
+
+nav ul li {
+display: inline;
+margin: 0 20px;
+}
+
+nav ul li a {
+color: #003366;
+text-decoration: none;
+font-size: 1.1em;
+transition: color 0.3s;
+}
+
+nav ul li a:hover {
+color: hsl(232, 100%, 50%);
+}
+
+button {
+    background-color: #b3d4f7;
+    color: #003366;
+    font-weight: bold;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #459bf7;
+}
+
+.logout-button {
+    padding: 5px 8px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-weight: bold;
+    width: 100px;
+    height: 22px;
+}
+
+.logout-button:hover {
+    background-color: #002244;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 800px;
+    margin-top: 50px;
+    height: 400px;
+    position: relative;
+}
+
+.welcome-message {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.hotel-image {
+    width: 150px;
+    height: 150px;
+    margin:20px;
+}
+
+.logo {
+    width: 80px;
+    height: auto;
+    margin-right: 30px;
+    vertical-align: middle;
+}
+
+.alert {
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    position: relative;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+.close {
+    margin-left: 15px;
+    cursor: pointer;
+    color: inherit;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    nav ul li {
+        display: block;
+        margin: 5px 0;
+    }
+
+    main {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hotel-image {
+        width: 100px;
+        margin-top: 15px;
+    }
+}

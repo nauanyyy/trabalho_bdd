@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema de Reservas de Hotéis{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <img src="{{ url_for('static', filename='hotel_menu.png') }}" alt="Logo" class="logo">
+                </li>
+                <li><a href="{{ url_for('index') }}">Início</a></li>
+                <li><a href="{{ url_for('hospedes') }}">Hóspedes</a></li>
+                <li><a href="{{ url_for('quartos') }}">Quartos</a></li>
+                <li><a href="{{ url_for('reservas') }}">Reservas</a></li>
+                <li><a href="{{ url_for('relatorios') }}">Relatórios</a></li>
+                {% if is_admin %}
+                    <li><a href="{{ url_for('cadastrar_usuario') }}">Cadastrar Usuário</a></li>
+                    <li><a href="{{ url_for('listar_logs') }}">Listagem de Logs</a></li>
+                {% endif %}
+                <li>
+                    <form action="{{ url_for('logout') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="logout-button">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                    <span class="close" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+        <div class="welcome-message">
+            <h2 style="color: #003366;">Bem-vindo ao Sistema de Reservas de Hotel</h2>
+            <p style="color: rgb(95, 93, 93);">Selecione uma opção no menu para começar.</p>
+        </div>
+        <img src="{{ url_for('static', filename='hotel_index.png') }}" class="hotel-image">
+    </main>
+</body>
+</html>

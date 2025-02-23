@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios</title>
+    <style>
+        body {
+                    font-family: 'Arial', sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #e9f4fe;
+                }
+
+        header {
+            background-color: #87ceeb;
+            padding: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: #003366;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: hsl(232, 100%, 50%);
+        }
+
+        .container {
+            display: flex;
+            margin: 60px auto 20px;
+            max-width: 1200px;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px; 
+            margin-right: 30px;
+        }
+
+        .form-container h2 {
+            margin-top: 0;
+            color: #003366;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+            padding: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        textarea,
+        select,
+        input[type="date"] {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #87ceeb;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        input[type="date"]:focus {
+            border-color: #000c79;
+            outline: none;
+        }
+
+        button {
+            background-color: #b3d4f7;
+            color: #003366;
+            font-weight: bold;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 15px; 
+        }
+
+        button:hover {
+            background-color: #459bf7;
+        }
+
+        .list-container {
+            flex: 1;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .list-container h2 {
+            margin-top: 0;
+            color: #003366;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #b3d4f7;
+            transition: background-color 0.3s;
+        }
+
+        th {
+            background-color: #87ceeb;
+            color: #003366; 
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+
+        tr:hover {
+            background-color: #d1e7fd;
+        }
+
+        .alert-container {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            margin-top: 5px;
+            transform: translateX(-50%);
+            width: auto;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .alert {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        .close {
+            margin-left: 15px;
+            cursor: pointer;
+            color: inherit;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .logout-button {
+            padding: 5px 8px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-weight: bold;
+            width: 100px;
+            height: 22px;
+        }
+
+        .logout-button:hover {
+            background-color: #002244;
+        }
+
+        
+        .logo {
+            width: 80px;
+            height: auto;
+            margin-right: 30px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .form-container, .list-container {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <img src="{{ url_for('static', filename='hotel_menu.png') }}" alt="Logo" class="logo">
+                </li>
+                <li><a href="{{ url_for('index') }}">Início</a></li>
+                <li><a href="{{ url_for('hospedes') }}">Hóspedes</a></li>
+                <li><a href="{{ url_for('quartos') }}">Quartos</a></li>
+                <li><a href="{{ url_for('reservas') }}">Reservas</a></li>
+                <li><a href="{{ url_for('relatorios') }}">Relatórios</a></li>
+                {% if is_admin %}
+                    <li><a href="{{ url_for('cadastrar_usuario') }}">Cadastrar Usuário</a></li>
+                    <li><a href="{{ url_for('listar_logs') }}">Listagem de Logs</a></li>
+                {% endif %}
+                <li>
+                <li>
+                    <form action="{{ url_for('logout') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="logout-button">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                    <span class="close" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <div class="form-container" style="height: 390px;">
+            <h2>Filtrar Relatórios</h2>
+            <form method="GET" action="{{ url_for('relatorios') }}">
+                <label for="search">Filtros:</label>
+                <select name="search" id="search" style="padding: 10px; border-radius: 5px; border: 1px solid #87ceeb; margin-right: 10px; width: 290px;">
+                    <option value="" {% if search_query == '' %}selected{% endif %}>Todos</option>
+                    <option value="total_por_hospede" {% if search_query == 'total_por_hospede' %}selected{% endif %}>Total por Hóspede</option>
+                    <option value="acima_2000" {% if search_query == 'acima_2000' %}selected{% endif %}>Hóspedes com Reservas Acima de R$2000</option>
+                    <option value="top_quartos" {% if search_query == 'top_quartos' %}selected{% endif %}>Top 10 Quartos Mais Reservados</option>
+                    <option value="nao_reservados" {% if search_query == 'nao_reservados' %}selected{% endif %}>Quartos Não Reservados</option>
+                </select>
+                <label for="start_date">Data Inicial:</label>
+                <input type="date" name="start_date">
+                <label for="end_date">Data Final:</label>
+                <input type="date" name="end_date">
+                <button type="submit">Filtrar</button>
+            </form>
+        </div>
+
+        <div class="list-container" style="height: auto;">
+            <div class="report">
+                {% if search_query == '' or search_query == 'total_por_hospede' %}
+                    <h2>Total de Reservas por Hóspede</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hóspede</th>
+                                <th>Total Gasto (R$)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in total_por_hospede %}
+                            <tr>
+                                <td>{{ item[0] }}</td>
+                                <td>{{ item[1] | currency }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+
+                {% if search_query == 'acima_2000' %}
+                    <h2>Hóspedes com Reservas Acima de R$2000</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hóspede</th>
+                                <th>Total Gasto (R$)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in acima_2000 %}
+                            <tr>
+                                <td>{{ item[0] }}</td>
+                                <td>{{ item[1] | currency }}</td> 
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+
+                {% if search_query == 'top_quartos' %}
+                    <h2>Top 10 Quartos Mais Reservados</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Quarto</th>
+                                <th>Total de Reservas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in top_quartos %}
+                            <tr>
+                                <td>{{ item[0] }}</td>
+                                <td>{{ item[1] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+
+                {% if search_query == 'nao_reservados' %}
+                    <h2>Quartos Não Reservados</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Quarto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in nao_reservados %}
+                            <tr>
+                                <td>{{ item[0] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
